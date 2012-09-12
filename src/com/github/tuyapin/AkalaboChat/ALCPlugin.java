@@ -1,73 +1,61 @@
 package com.github.tuyapin.AkalaboChat;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import java.util.logging.Logger;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ALCPlugin extends JavaPlugin
 {
-  private static ALCPlugin plugin;
-  private LoadFiles romaToHiraData;
+	private static ALCPlugin plugin;
+	private LoadFiles romaToHiraData;
+	private Logger logger;
 
-  public void onEnable()
-  {
-    plugin = this;
+	public void onEnable()
+	{
+		plugin = this;
+		logger = Logger.getLogger("Minecraft");
 
-    loadConfiguration();
-    plugin.saveConfig();
+		loadConfiguration();
     
-    getCommand("alc").setExecutor(new Commands(this));
+		getCommand("alc").setExecutor(new Commands(this));
     
-    
-    this.romaToHiraData = new LoadFiles(this);
-    new Event(this);
-    this.romaToHiraData.a();
+		this.romaToHiraData = new LoadFiles(this);
+		new Event(this);
+		this.romaToHiraData.a();
 
-    getLogger().info("ALC enabled!");
-  }
+		logger.info("ALC enabled!");
+	}
 
-  public void onDisable()
-  {
-    plugin.saveConfig();
-
-    getLogger().info("ALC disabled!");
-  }
+	public void onDisable()
+	{
+		logger.info("ALC disabled!");
+	}
  
-  public void reload()
-  {
-	  this.romaToHiraData = null;
-	  this.romaToHiraData = new LoadFiles(this);
-	  this.romaToHiraData.a();
-	  
-	  getLogger().info("ALC Reload!");
-  }
+	public void reload()
+	{
+		this.romaToHiraData = null;
+		this.romaToHiraData = new LoadFiles(this);
+		this.romaToHiraData.a();
+		
+		logger.info("ALC Reload!");
+	}
 
-  public static ALCPlugin getPlugin()
-  {
-    return plugin;
-  }
+	public static ALCPlugin getPlugin()
+	{
+		return plugin;
+	}
 
-  public void disablePlugin() {
-    getPluginLoader().disablePlugin(this);
-  }
+	public LoadFiles getRomaToHiraData() {
+		return this.romaToHiraData;
+	}
 
-
-  public LoadFiles getRomaToHiraData() {
-    return this.romaToHiraData;
-  }
-
-  public String getVersion()
-  {
-    return getDescription().getVersion();
-  }
+	public String getVersion()
+	{
+		return getDescription().getVersion();
+	}
   
-  public void loadConfiguration()
-  {
-    FileConfiguration config;
-    (
-      config = plugin.getConfig())
-      .options().copyDefaults(true);
-    plugin.saveConfig();
-  }
-
-  
+	public void loadConfiguration()
+	{
+		plugin.saveConfig();
+	}  
 }

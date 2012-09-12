@@ -1,6 +1,7 @@
 package com.github.tuyapin.AkalaboChat;
 
 import java.io.*;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,11 +12,15 @@ public class Commands implements CommandExecutor
 {
 	private ALCPlugin plugin;
 	private PrintWriter pw;
+	private BufferedReader br;
+	private LineNumberReader lnr;
 	private File file;
 	private FileOutputStream fos;
-	private LoadFiles load;
+	private FileInputStream fis;
 	private String help = "";
 	private String info = "";
+	private String clear = "";
+	private String line = "";
 	private ChatColor white = ChatColor.WHITE;
 	private ChatColor gold = ChatColor.GOLD;
 	private ChatColor aqua = ChatColor.AQUA;
@@ -23,7 +28,6 @@ public class Commands implements CommandExecutor
 	public Commands(ALCPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.load = new LoadFiles(plugin);
 		help += aqua + "---------------ALC HELP---------------\n";
 		help += gold + "/alc help" + white + ": Open the helps.\n";
 		help += gold + "/alc add k [HIRAGANA]" + white + ": Add the words to list to convert of KATAKANA.\n";
@@ -35,6 +39,7 @@ public class Commands implements CommandExecutor
 		help += gold + "/alc info" + white + ": Open the this Plugins Information.";
 		info += aqua + "--------------ALC INFO---------------\n";
 		info += white + "AkalaboChat " + plugin.getVersion();
+		clear = ChatColor.GREEN + "Success!";
 	}
 
 	@Override
@@ -54,68 +59,164 @@ public class Commands implements CommandExecutor
 			}
 			if(arg3[0].equalsIgnoreCase("add"))
 			{
-				// /alc k べっど
-				if(arg3[0].equalsIgnoreCase("k"))
+				//Add a Japanese words.
+				if(arg3[1].equalsIgnoreCase("k"))
 				{
-					if(arg3.length >= 3)
+					if(arg3.length != 3)
 					{
-						arg0.sendMessage(ChatColor.RED + "Too many Arguments!!");
 						return false;
 					}
-					try {
-						file = new File(this.plugin.getDataFolder(), "kana_words.txt");
+					try
+					{
+						file = new File(plugin.getDataFolder(), "kana.txt");
 						fos = new FileOutputStream(file, true);
 						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
-						pw.println(arg3[1]);
+						pw.println(arg3[2]);
 						pw.close();
-						arg0.sendMessage(ChatColor.GREEN + "Success!");
+						arg0.sendMessage(clear);
 						plugin.reload();
 						return true;
-					} catch (IOException e) {
+					} catch (Exception e)
+					{
 						e.printStackTrace();
 					}
 				}
-				// /alc c ringo 林檎
-				if(arg3[0].equalsIgnoreCase("c"))
+				//Add a Chinese words.
+				if(arg3[1].equalsIgnoreCase("c"))
 				{
-					if(arg3.length >= 4)
+					if(arg3.length != 4)
 					{
-						arg0.sendMessage(ChatColor.RED + "Too many Arguments!!");
 						return false;
 					}
-					try {
-						file = new File(this.plugin.getDataFolder(), "kanji_words.txt");
+					try
+					{
+						file = new File(plugin.getDataFolder(), "kanji.txt");
 						fos = new FileOutputStream(file, true);
 						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
-						pw.println(arg3[1] + " " + arg3[2]);
+						pw.println(arg3[2] + "　" + arg3[3]);
 						pw.close();
-						load.addKanji(arg3[1], arg3[2]);
-						arg0.sendMessage(ChatColor.GREEN + "Success!");
+						arg0.sendMessage(clear);
 						plugin.reload();
 						return true;
-					} catch (IOException e) {
-						e.getStackTrace();
+					}catch(Exception e)
+					{
+						e.printStackTrace();
 					}
 				}
-				// /alc e English
-				if(arg3[0].equalsIgnoreCase("e"))
+				//Add a English words.
+				if(arg3[1].equalsIgnoreCase("e"))
 				{
-					if(arg3.length >= 3)
+					if(arg3.length != 3)
 					{
-						arg0.sendMessage(ChatColor.RED + "Too many Arguments!!");
 						return false;
 					}
-					try {					
-						file = new File(this.plugin.getDataFolder(), "ignore_words.txt");
+					try
+					{
+						file = new File(plugin.getDataFolder(), "english.txt");
 						fos = new FileOutputStream(file, true);
 						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
-						pw.println(arg3[1]);
+						pw.println(arg3[2]);
 						pw.close();
-						load.addIgnore(arg3[1]);
-						arg0.sendMessage(ChatColor.GREEN + "Success!");
-						this.plugin.reload();
+						arg0.sendMessage(clear);
+						plugin.reload();
 						return true;
-					} catch (IOException e) {
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+			if(arg3[0].equalsIgnoreCase("del"))
+			{
+				//Delete a Japanese word.
+				if(arg3[1].equalsIgnoreCase("k"))
+				{
+					if(arg3.length != 3)
+					{
+						return false;
+					}
+					try
+					{
+						file = new File(plugin.getDataFolder(), "kana.txt");
+						br = new BufferedReader(new FileReader(file));
+						fos = new FileOutputStream(file, true);
+						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
+						
+						while((line = br.readLine()) != null)
+						{
+							if(line != arg3[2])
+							{
+								pw.print(line);
+							}
+						}
+						plugin.reload();
+						return true;
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+				//Delete a Chinese word.
+				if(arg3[1].equalsIgnoreCase("c"))
+				{
+					if(arg3.length != 4)
+					{
+						return false;
+					}
+					try
+					{
+						file = new File(plugin.getDataFolder(), "kanji.txt");
+						br = new BufferedReader(new FileReader(file));
+						lnr = new LineNumberReader(br);
+						fos = new FileOutputStream(file, true);
+						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
+						plugin.getLogger().fine(br.readLine());
+						
+						while(lnr.readLine() != null)
+						{
+							plugin.getLogger().log(Level.WARNING, "" + lnr.getLineNumber());
+							line = lnr.readLine();
+							if(line != (arg3[2] + "　" + arg3[3]))
+							{
+								pw.println(line);
+							}
+						}
+						plugin.reload();
+						br.close();
+						pw.close();
+						return true;
+					} catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+				//Delete a English word.
+				if(arg3[1].equalsIgnoreCase("e"))
+				{
+					if(arg3.length != 3)
+					{
+						return false;
+					}
+					try
+					{
+						file = new File(plugin.getDataFolder(), "english.txt");
+						br = new BufferedReader(new FileReader(file));
+						fos = new FileOutputStream(file, true);
+						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
+						
+						while((line = br.readLine()) != null)
+						{
+							if(line != arg3[2])
+							{
+								pw.print(line);
+							}
+						}
+						plugin.reload();
+						fos.close();
+						br.close();
+						return true;
+					} catch (Exception e)
+					{
 						e.printStackTrace();
 					}
 				}
