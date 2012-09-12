@@ -1,6 +1,8 @@
 package com.github.tuyapin.AkalaboChat;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
@@ -16,11 +18,12 @@ public class Commands implements CommandExecutor
 	private LineNumberReader lnr;
 	private File file;
 	private FileOutputStream fos;
-	private FileInputStream fis;
 	private String help = "";
 	private String info = "";
 	private String clear = "";
-	private String line = "";
+	private String line = null;
+	private String[] strList = new String[2];
+	private List<String> list = new ArrayList<String>();
 	private ChatColor white = ChatColor.WHITE;
 	private ChatColor gold = ChatColor.GOLD;
 	private ChatColor aqua = ChatColor.AQUA;
@@ -40,6 +43,8 @@ public class Commands implements CommandExecutor
 		info += aqua + "--------------ALC INFO---------------\n";
 		info += white + "AkalaboChat " + plugin.getVersion();
 		clear = ChatColor.GREEN + "Success!";
+		strList[0] = "#FILE FORMAT: UTF-8N　";
+		strList[1] = "#DON'T DELETE THE FIRST TWO LINES!";
 	}
 
 	@Override
@@ -172,10 +177,9 @@ public class Commands implements CommandExecutor
 						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
 						plugin.getLogger().fine(br.readLine());
 						
-						while(lnr.readLine() != null)
+						while((line = br.readLine()) != null)
 						{
 							plugin.getLogger().log(Level.WARNING, "" + lnr.getLineNumber());
-							line = lnr.readLine();
 							if(line != (arg3[2] + "　" + arg3[3]))
 							{
 								pw.println(line);
@@ -201,18 +205,25 @@ public class Commands implements CommandExecutor
 					{
 						file = new File(plugin.getDataFolder(), "english.txt");
 						br = new BufferedReader(new FileReader(file));
-						fos = new FileOutputStream(file, true);
-						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
-						
 						while((line = br.readLine()) != null)
 						{
-							if(line != arg3[2])
+							if(!arg3[2].equalsIgnoreCase(line))
 							{
-								pw.print(line);
+								list.add(line);
 							}
 						}
+						
+						list.set(0, strList[0]);
+						list.set(1, strList[1]);
+						
+						fos = new FileOutputStream(file, false);
+						pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
+						for(int j = 0; j < list.size(); j++)
+						{
+							pw.println(list.get(j));
+						}
 						plugin.reload();
-						fos.close();
+						//fos.close();
 						br.close();
 						return true;
 					} catch (Exception e)
