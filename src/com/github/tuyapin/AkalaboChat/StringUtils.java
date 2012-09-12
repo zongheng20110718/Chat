@@ -1,4 +1,4 @@
-package com.github.tuyapin;
+package com.github.tuyapin.AkalaboChat;
 
 import java.util.List;
 

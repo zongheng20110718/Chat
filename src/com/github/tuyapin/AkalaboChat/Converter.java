@@ -1,13 +1,13 @@
-package com.github.tuyapin;
+package com.github.tuyapin.AkalaboChat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class Com
+public final class Converter
 {
-  private static HashMap<String, String> a = new Comverter();
+  private static HashMap<String, String> a = new ConvertDefiner();
 
   public static boolean a(String text)
   {

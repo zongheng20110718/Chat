@@ -1,0 +1,8 @@
+name: AkalaboChat
+main: com.github.tuyapin.AkalaboChat.ALCPlugin
+version: 1.3.2.12
+author: tuyapin
+commands:
+  alc:
+    desctiption: All Start Commands.
+    usage: /<command> <arg1> [param1]...

@@ -1,4 +1,4 @@
-package com.github.tuyapin;
+package com.github.tuyapin.AkalaboChat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public final class Load
+public final class LoadFiles
 {
   private ALCPlugin a;
   private List<String> b;
@@ -22,7 +22,7 @@ public final class Load
   private File f;
   private File g;
 
-  public Load(ALCPlugin plugin)
+  public LoadFiles(ALCPlugin plugin)
   {
     this.a = plugin;
     this.b = new ArrayList<String>();

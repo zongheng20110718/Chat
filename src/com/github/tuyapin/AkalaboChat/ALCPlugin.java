@@ -1,4 +1,4 @@
-package com.github.tuyapin;
+package com.github.tuyapin.AkalaboChat;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -6,8 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ALCPlugin extends JavaPlugin
 {
   private static ALCPlugin plugin;
-  private Load romaToHiraData;
-  private Commands command;
+  private LoadFiles romaToHiraData;
 
   public void onEnable()
   {
@@ -16,11 +15,11 @@ public class ALCPlugin extends JavaPlugin
     loadConfiguration();
     plugin.saveConfig();
     
-    command = new Commands(this);
-    getCommand("alc").setExecutor(command);
+    getCommand("alc").setExecutor(new Commands(this));
     
-    this.romaToHiraData = new Load(this);
-    new JapaneseComvert(this);
+    
+    this.romaToHiraData = new LoadFiles(this);
+    new Event(this);
     this.romaToHiraData.a();
 
     getLogger().info("ALC enabled!");
@@ -36,7 +35,7 @@ public class ALCPlugin extends JavaPlugin
   public void reload()
   {
 	  this.romaToHiraData = null;
-	  this.romaToHiraData = new Load(this);
+	  this.romaToHiraData = new LoadFiles(this);
 	  this.romaToHiraData.a();
 	  
 	  getLogger().info("ALC Reload!");
@@ -52,7 +51,7 @@ public class ALCPlugin extends JavaPlugin
   }
 
 
-  public Load getRomaToHiraData() {
+  public LoadFiles getRomaToHiraData() {
     return this.romaToHiraData;
   }
 

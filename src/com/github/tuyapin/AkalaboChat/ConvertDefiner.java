@@ -1,11 +1,11 @@
-package com.github.tuyapin;
+package com.github.tuyapin.AkalaboChat;
 
 import java.util.HashMap;
 
 @SuppressWarnings("serial")
-final class Comverter extends HashMap<String, String>
+final class ConvertDefiner extends HashMap<String, String>
 {
-  Comverter()
+  ConvertDefiner()
   {
     put("a", "あ");
     put("i", "い");
