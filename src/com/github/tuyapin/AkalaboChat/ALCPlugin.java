@@ -11,51 +11,51 @@ public class ALCPlugin extends JavaPlugin
 	private Logger logger;
 
 	public void onEnable()
-	{
-		plugin = this;
-		logger = Logger.getLogger("Minecraft");
+    {
+        plugin = this;
+        logger = Logger.getLogger("Minecraft");
 
-		loadConfiguration();
+        loadConfiguration();
     
-		getCommand("alc").setExecutor(new Commands(this));
+        getCommand("alc").setExecutor(new Commands(this));
     
-		this.romaToHiraData = new LoadFiles(this);
-		new Event(this);
-		this.romaToHiraData.a();
+        this.romaToHiraData = new LoadFiles(this);
+        new Event(this);
+        this.romaToHiraData.a();
 
-		logger.info("ALC enabled!");
-	}
+        logger.info("ALC enabled!");
+    }
 
-	public void onDisable()
-	{
-		logger.info("ALC disabled!");
-	}
+    public void onDisable()
+    {
+        logger.info("ALC disabled!");
+    }
  
-	public void reload()
-	{
-		this.romaToHiraData = null;
-		this.romaToHiraData = new LoadFiles(this);
-		this.romaToHiraData.a();
-		
-		logger.info("ALC Reload!");
-	}
+    public void reload()
+    {
+        this.romaToHiraData = null;
+        this.romaToHiraData = new LoadFiles(this);
+        this.romaToHiraData.a();
+        
+        logger.info("ALC Reload!");
+    }
 
-	public static ALCPlugin getPlugin()
-	{
-		return plugin;
-	}
+    public static ALCPlugin getPlugin()
+    {
+        return plugin;
+    }
 
-	public LoadFiles getRomaToHiraData() {
-		return this.romaToHiraData;
-	}
+    public LoadFiles getRomaToHiraData() {
+        return this.romaToHiraData;
+    }
 
-	public String getVersion()
-	{
-		return getDescription().getVersion();
-	}
+    public String getVersion()
+    {
+        return getDescription().getVersion();
+    }
   
-	public void loadConfiguration()
-	{
-		plugin.saveConfig();
-	}  
+    public void loadConfiguration()
+    {
+        plugin.saveConfig();
+    }  
 }
