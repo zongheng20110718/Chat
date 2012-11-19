@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 name: AkalaboChat
 <<<<<<< HEAD
 main: net.tuyapin.alc.AkalaboChat
@@ -45,3 +46,17 @@ commands:
     desctiption: All Start Commands.
     usage: /<command> <arg1> [param1]...
 >>>>>>> Bukkit 1.3.2-R0.2 #2364
+=======
+name: AkalaboChat
+author: tuyapin
+main: com.github.tuyapin.AkalaboChat.AkalaboChat
+version: 1.4.5.16
+commands:
+  alc:
+    description: All Start Commands for AkalaboChat.
+    usage: /alc <arg1> [prm1]...
+permission: 
+  alc.add:
+  alc.del:
+  alc.help:
+>>>>>>> Bukkit 1.4.2-R0.2
