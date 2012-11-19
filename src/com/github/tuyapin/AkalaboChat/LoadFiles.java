@@ -1,207 +1,160 @@
 package com.github.tuyapin.AkalaboChat;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
-public final class LoadFiles
-{
-    private ALCPlugin plugin;
-    private List<String> b;
-    private List<String> c;
-    private Map<String, String> d;
-    private File e;
-    private File f;
-    private File g;
+public class LoadFiles {
     
-    public LoadFiles(ALCPlugin plugin)
+    private AkalaboChat plugin;
+    
+    //ignore words
+    private List<String> ignore = new ArrayList<String>();
+    //convert Japanese(Katakana)
+    private List<String> jpn = new ArrayList<String>();
+    //convert Chinese(Kanji)
+    private Map<String, String> chn = new HashMap<String, String>();
+    //newline code
+    @SuppressWarnings("unused")
+    private String nl = System.getProperty("line.separator");
+    
+    public LoadFiles(AkalaboChat plugin)
     {
         this.plugin = plugin;
-        this.b = new ArrayList<String>();
-        this.c = new ArrayList<String>();
-        this.d = new HashMap<String, String>();
-
-        this.e = new File(plugin.getDataFolder(), "english.txt");
-        this.f = new File(plugin.getDataFolder(), "kana.txt");
-        this.g = new File(plugin.getDataFolder(), "kanji.txt");
     }
-
-    public final void a() {
-        if (!this.e.exists()) {
-            a(this.e);
-        }
-
-        if (!this.f.exists()) {
-            a(this.f);
-        }
-
-        if (!this.g.exists()) {
-            a(this.g);
-        }
-
-        try
-        {
-            InputStream is = new FileInputStream(this.e);
-            Scanner scanner = new Scanner(is, "UTF-8");
-            this.b.clear();
-            while (scanner.hasNextLine())
-            {
-                String line;
-                if ((!(
-                        line = scanner.nextLine().trim())
-                        .startsWith("#")) && (!line.equals("")))
-                    this.b.add(line);
-            }
-            this.plugin.getLogger().info(String.valueOf(this.b.size()) + " ignore words loaded.");
-        } catch (Exception e) {
-            this.plugin.getLogger().severe("Could not load file: " + this.e.getName() + " " + e.getMessage());
-        }
-
-        try
-        {
-            InputStream is = new FileInputStream(this.f);
-            Scanner scanner = new Scanner(is, "UTF-8");
-            this.c.clear();
-            while (scanner.hasNextLine())
-            {
-                String line;
-                if ((!(
-                        line = scanner.nextLine().trim())
-                        .startsWith("#")) && (!line.equals("")))
-                    this.c.add(line);
-            }
-            this.plugin.getLogger().info(String.valueOf(this.c.size()) + " kana words loaded.");
-        } catch (Exception e) {
-            this.plugin.getLogger().severe("Could not load file: " + this.f.getName() + " " + e.getMessage());
-        }
-
-        try
-        {
-            InputStream is = new FileInputStream(this.g);
-            Scanner scanner = new Scanner(is, "UTF-8");
-            this.d.clear();
-            while (scanner.hasNextLine())
-            {
-                String line;
-                String[] words;
-                if (((
-                        line = scanner.nextLine().trim())
-                        .startsWith("#")) || (line.equals("")) || 
-                        ((
-                                words = line.split("　", 2)).length != 
-                                2)) continue;
-                this.d.put(words[0].trim(), words[1].trim());
-            }
-            this.plugin.getLogger().info(String.valueOf(this.d.size()) + " kanji words loaded.");
-
-            return;
-        }
-        catch (Exception e) {
-            this.plugin.getLogger().severe("Could not load file: " + this.g.getName() + " " + e.getMessage());
-        }
-  }
-
-    public final void b() {
-      a();
-    }
-
-    private void a(File file)
+    
+    public void load()
     {
-        InputStream is = null;
-        OutputStream os = null;
-        try {
-            is = this.plugin.getClass().getResourceAsStream("/" + file.getName());
-            os = new FileOutputStream(file);
+        //Load ignore.dfg
+        File file = new File(plugin.getDataFolder(), "ignore.cfg");
 
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = is.read(buf)) > 0) {
-                os.write(buf, 0, len);
+        try 
+        {
+            if(!file.exists())
+            {
+                file.createNewFile();
             }
             
-            if (is != null)
-                try {
-                    is.close();
-                }
-            catch (IOException localIOException1)
+            InputStream is = new FileInputStream(file);
+            //Mac OS Support
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line;
+            
+            this.ignore.clear();
+            while((line = br.readLine()) != null)
             {
-                this.plugin.getLogger().severe("Could not load file: " + file.getName());
-            }
-            try
-            {
-                os.close();
-                return;
-            }
-            catch (IOException localIOException2)
-            {
-                this.plugin.getLogger().severe("Could not load file: " + file.getName());
-                return;
-            }
-            }
-            catch (Exception e)
-            {
-                this.plugin.getLogger().severe("Could not load file: " + file.getName());
-
-                if (is != null) {
-                    try {
-                        is.close();
-                    }
-                    catch (IOException localIOException3)
-                    {
-                        //IOException e;
-                        this.plugin.getLogger().severe("Could not load file: " + file.getName());
-                    }    
-                }
-
-                if (os != null)
-                    try {
-                        os.close();
-                        return;
-                    }
-                catch (IOException localIOException4)
+                if(!line.startsWith("#") && !line.equals(""))
                 {
-                    this.plugin.getLogger().severe("Could not load file: " + file.getName());
-                    return;
+                    this.ignore.add(line);
                 }
             }
-        finally
+            
+        } catch (Exception e) 
         {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException localIOException5) {
-                    this.plugin.getLogger().severe("Could not load file: " + file.getName());
+            this.plugin.exception(e);
+        }
+        
+        //Load kana.cfg
+        file = new File(this.plugin.getDataFolder(), "kana.cfg");
+        
+        try
+        {
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
+            
+            InputStream is = new FileInputStream(file);
+            //Mac OS Support
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line;
+            
+            this.jpn.clear();
+            while((line = br.readLine()) != null)
+            {
+                if(!line.startsWith("#") && !line.equals(""))
+                {
+                    this.jpn.add(line);
                 }
             }
-
-            if (os != null)
-                try {
-                    os.close();
-                } catch (IOException localIOException6) {
-                    this.plugin.getLogger().severe("Could not load file: " + file.getName());
-                }
+            
+        } catch (Exception e)
+        {
+            this.plugin.exception(e);
         }
+        
+        //Load kanji.cfg
+        file = new File(this.plugin.getDataFolder(), "kanji.cfg");
+        
+        try
+        {
+            if(!file.exists())
+            {
+                file.createNewFile();
+            }
+            
+            InputStream is = new FileInputStream(file);
+            //Mac OS Support
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line;
+            int i = 1;
+            
+            this.chn.clear();
+            while((line = br.readLine()) != null)
+            {
+                //" "を含まない場合はSyntaxエラーとして出力
+                if(!line.startsWith("#") && !line.equals("") && line.contains(" "))
+                {
+                    String[] buf = line.split(" ");
+                    String var10 = "";
+                    for(int j = 1; j < buf.length; j++)
+                    {
+                        var10 += buf[j];
+                        if(j != buf.length - 1)
+                        {
+                            var10 += " ";
+                        }
+                    }
+                    this.chn.put(buf[0], var10);
+                    
+                } else {
+                    if(!line.contains(" ") && !line.startsWith("#") && !line.equals(""))
+                    {
+                        //Syntaxエラー
+                        this.plugin.logger.warning("[ALC]Error : Syntax Error 'kanji.cfg'. Line to " + i);
+                    }
+                }
+                i++;
+            }
+            
+        } catch (Exception e)
+        {
+            this.plugin.exception(e);
+        }
+        
+        this.plugin.logger.info("[ALC]" + this.ignore.size() + " ignore words loaded!");
+        this.plugin.logger.info("[ALC]" + this.jpn.size() + " kana words loaded!");
+        this.plugin.logger.info("[ALC]" + this.chn.size() + " kanji words loaded!");
     }
-
-    public final List<String> c()
+    
+    public List<String> getIgnoreWords()
     {
-        return this.b;
+        return this.ignore;
     }
-
-    public final List<String> d() {
-        return this.c;
+    
+    public List<String> getKanaWords()
+    {
+        return this.jpn;
     }
-
-    public final Map<String, String> e() {
-        return this.d;
+    
+    public Map<String, String> getKanjiWords()
+    {
+        return this.chn;
     }
-   
 }

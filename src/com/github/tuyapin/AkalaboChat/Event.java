@@ -7,24 +7,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
 @SuppressWarnings("deprecation")
-public final class Event implements Listener
-{
-    private final ALCPlugin plugin;
+public class Event implements Listener {
     
-    public Event(ALCPlugin plugin)
+    @EventHandler(priority=EventPriority.LOWEST)
+    public void onPlayerChat(PlayerChatEvent e)
     {
-        this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        //コマンド無視
+        if(e.getMessage().startsWith("/"))
+        {
+            return;
+        }
+        //2Byte文字を含む場合も除去(NihongoMOD,MinecraftIM対策)
+        if(e.getMessage().getBytes().length != e.getMessage().length())
+        {
+            return;
+        }
+        //
+        AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[ALC]" + Converter.convert(e.getMessage()));
     }
 
-    @SuppressWarnings({ "static-access" })
-    @EventHandler(priority=EventPriority.LOWEST)
-    public final void onPlayerChat(PlayerChatEvent event) {
-        if(event.getMessage().startsWith("/")) return;
-        Converter ca = new Converter();
-        if(event.getMessage().getBytes().length == event.getMessage().length())
-        {
-            plugin.getServer().broadcastMessage(ChatColor.GOLD + "[ALC]" + ca.b(event.getMessage()));
-        }
-    }
 }

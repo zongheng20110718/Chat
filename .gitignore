@@ -1,0 +1,11 @@
+# Compile Files #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+
+# bin folder #
+bin

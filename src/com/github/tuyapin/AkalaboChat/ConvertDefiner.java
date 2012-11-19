@@ -3,12 +3,12 @@ package com.github.tuyapin.AkalaboChat;
 import java.util.HashMap;
 
 @SuppressWarnings("serial")
-final class ConvertDefiner extends HashMap<String, String>
+public class ConvertDefiner extends HashMap<String, String>
 {
-    ConvertDefiner() {
+    ConvertDefiner()
+    {
         put("a", "あ");
         put("i", "い");
-        put("yi", "い");
         put("u", "う");
         put("wu", "う");
         put("whu", "う");
@@ -318,5 +318,6 @@ final class ConvertDefiner extends HashMap<String, String>
         put("yy", "っ");
         put("zz", "っ");
         put("-", "ー");
+        put(",", "、");
     }
 }
