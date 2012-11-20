@@ -1,0 +1,12 @@
+name: AkalaboChat
+author: tuyapin
+main: com.github.tuyapin.AkalaboChat.AkalaboChat
+version: 1.4.5.16
+commands:
+  alc:
+    description: All Start Commands for AkalaboChat.
+    usage: /alc <arg1> [prm1]...
+permission: 
+  alc.add:
+  alc.del:
+  alc.help:
