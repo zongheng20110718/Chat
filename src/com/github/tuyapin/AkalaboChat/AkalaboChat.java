@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 public class AkalaboChat extends JavaPlugin
 {
@@ -37,6 +38,9 @@ public class AkalaboChat extends JavaPlugin
             {
                 this.logger.info("[ALC]New Version found! ->" + n);
             }
+            
+            Metrics metrics = new Metrics(this);
+            metrics.start();
             
         } catch (Exception e) {}
         
