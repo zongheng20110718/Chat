@@ -14,7 +14,7 @@ public class AkalaboChat extends JavaPlugin
     public static AkalaboChat plugin;
     public static LoadFiles files;
     
-    public static boolean delNGChat = true;
+    public static boolean source = true;
     
     Logger logger = Logger.getLogger("Minecraft");
     
@@ -26,7 +26,7 @@ public class AkalaboChat extends JavaPlugin
         //Check new version
         try {
             
-            URL url = new URL("http://tuyapin.github.com/bukkit/AkalaboChat.txt");
+            URL url = new URL("https://dl.dropbox.com/u/81948878/Bukkit/AkalaboChat.txt");
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
             
             http.connect();
@@ -78,8 +78,7 @@ public class AkalaboChat extends JavaPlugin
     public void loadConfiguration()
     {
         this.getConfig().options().copyDefaults(true);
+        source = this.getConfig().getBoolean("alc.chat.source");
         this.saveConfig();
-        
-        delNGChat = this.getConfig().getBoolean("NGChat");
     }
 }
