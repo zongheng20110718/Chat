@@ -8,13 +8,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 public class Event implements Listener {
     
     public static final Pattern URL = Pattern.compile("(http://|https://){1}[\\w\\.\\-/:\\#\\?\\=\\&\\;\\%\\~\\+]+", Pattern.CASE_INSENSITIVE);
     
+    @SuppressWarnings("deprecation")
     @EventHandler(priority=EventPriority.LOWEST)
-    public void onPlayerChat(AsyncPlayerChatEvent e)
+    public void onPlayerChat(PlayerChatEvent e)
     {
         //コマンド無視
         if(e.getMessage().startsWith("/"))
@@ -42,11 +44,12 @@ public class Event implements Listener {
             }
             AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[ALC]" + String.format(text, URL));
         } else {
+            String text = e.getMessage();
             if(!AkalaboChat.source)
             {
                 e.setMessage("");
             }
-            AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[ALC]" + Converter.convert(e.getMessage()));
+            AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[ALC]" + Converter.convert(text));
         }
     }
 
