@@ -77,8 +77,14 @@ public class AkalaboChat extends JavaPlugin
     
     public void loadConfiguration()
     {
-        this.getConfig().options().copyDefaults(true);
-        source = this.getConfig().getBoolean("alc.chat.source");
+        if(this.getConfig().isBoolean("showSourceChat"))
+        {
+            source = this.getConfig().getBoolean("showSourceChat");
+        } else {
+            source = true;
+            this.getConfig().createSection("showSourceChat");
+            this.getConfig().set("showSourceChat", true);
+        }
         this.saveConfig();
     }
 }
