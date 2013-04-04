@@ -39,22 +39,22 @@ public class Event implements Listener {
             String text = Converter.convert(e.getMessage().replaceAll(URL, "%s"));
             if(!AkalaboChat.source)
             {
-                //e.setMessage("");
-                //e.setPlayer(null);
                 e.setCancelled(true);
-                text = "<" + e.getPlayer().getName() + ">" + text;
+                text = "<" + e.getPlayer().getName() + "> " + text;
+                AkalaboChat.plugin.getServer().broadcastMessage(String.format(text, URL));
+            } else {
+                AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[" + AkalaboChat.header + "] " + String.format(text, URL));
             }
-            AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[ALC]" + String.format(text, URL));
         } else {
             String text = e.getMessage();
             if(!AkalaboChat.source)
             {
-                //e.setMessage("");
-                //e.setPlayer(null);
                 e.setCancelled(true);
-                text = "<" + e.getPlayer().getName() + ">" + Converter.convert(text);
+                text = "<" + e.getPlayer().getName() + "> " + Converter.convert(text);
+                AkalaboChat.plugin.getServer().broadcastMessage(text);
+            } else {
+                AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[" + AkalaboChat.header + "] " + Converter.convert(text));
             }
-            AkalaboChat.plugin.getServer().broadcastMessage(ChatColor.GOLD + "[ALC]" + text);
         }
     }
 

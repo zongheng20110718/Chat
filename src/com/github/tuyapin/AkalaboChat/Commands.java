@@ -125,7 +125,7 @@ public class Commands implements CommandExecutor {
                             file = new File(AkalaboChat.plugin.getDataFolder(), "kanji.cfg");
                             fos = new FileOutputStream(file, true);
                             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
-                            pw.println(arg3[2] + "　" + arg3[3]);
+                            pw.println(arg3[2] + " " + arg3[3]);
                             pw.close();
                             arg0.sendMessage(clear);
                             AkalaboChat.plugin.reload();
@@ -214,7 +214,7 @@ public class Commands implements CommandExecutor {
                             
                             while((line = br.readLine()) != null)
                             {
-                                String[] str = line.split("　");
+                                String[] str = line.split(" ");
                                 if(!arg3[2].equalsIgnoreCase(str[0]) && !arg3[3].equalsIgnoreCase(str[1]))
                                 {
                                     list.add(line);

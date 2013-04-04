@@ -15,6 +15,8 @@ public class AkalaboChat extends JavaPlugin
     public static LoadFiles files;
     
     public static boolean source = true;
+    public static String header = "ALC";
+    public static boolean useChatColor = false;
     
     Logger logger = Logger.getLogger("Minecraft");
     
@@ -85,6 +87,8 @@ public class AkalaboChat extends JavaPlugin
             this.getConfig().createSection("showSourceChat");
             this.getConfig().set("showSourceChat", true);
         }
+        header = this.getConfig().getString("header");
+        useChatColor = this.getConfig().getBoolean("useChatColor");
         this.saveConfig();
     }
 }

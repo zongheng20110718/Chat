@@ -1,2 +1,4 @@
 useDictionary : true
 showSourceChat : true
+header : ALC
+useChatColor : false
