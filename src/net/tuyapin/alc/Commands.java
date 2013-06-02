@@ -1,4 +1,4 @@
-package com.github.tuyapin.AkalaboChat;
+package net.tuyapin.alc;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -160,7 +160,7 @@ public class Commands implements CommandExecutor {
                 }
             }
             
-            if(arg3[1].equalsIgnoreCase("del"))
+            if(arg3[0].equalsIgnoreCase("del"))
             {
                 if(player == null || player.hasPermission("alc.del"))
                 {

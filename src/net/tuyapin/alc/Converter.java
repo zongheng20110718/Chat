@@ -1,4 +1,4 @@
-package com.github.tuyapin.AkalaboChat;
+package net.tuyapin.alc;
 
 import java.util.ArrayList;
 import java.util.HashMap;

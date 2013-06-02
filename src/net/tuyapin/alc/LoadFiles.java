@@ -1,4 +1,4 @@
-package com.github.tuyapin.AkalaboChat;
+package net.tuyapin.alc;
 
 import java.io.BufferedReader;
 import java.io.File;

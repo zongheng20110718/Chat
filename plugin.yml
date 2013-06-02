@@ -1,7 +1,7 @@
 name: AkalaboChat
 author: tuyapin
-main: com.github.tuyapin.AkalaboChat.AkalaboChat
-version: 1.5.1.26
+main: net.tuyapin.alc.AkalaboChat
+version: 1.5.2.27
 commands:
   alc:
     description: All Start Commands for AkalaboChat.
