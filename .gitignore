@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compile Files #
 *.class
 
@@ -9,3 +10,9 @@
 
 # bin folder #
 bin
+=======
+bin
+package
+*.zip
+*.jar
+>>>>>>> 172

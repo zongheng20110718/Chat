@@ -5,7 +5,11 @@ import java.util.HashMap;
 @SuppressWarnings("serial")
 public class ConvertDefiner extends HashMap<String, String>
 {
+<<<<<<< HEAD
     public ConvertDefiner()
+=======
+    ConvertDefiner()
+>>>>>>> 172
     {
         put("a", "あ");
         put("i", "い");

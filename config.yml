@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # =================================================
 # AkalaboChat Configuration
 # =================================================
@@ -58,3 +59,9 @@ chatcolor: true
 #
 # apikey:
 apikey: 
+=======
+useDictionary : true
+showSourceChat : true
+header : ALC
+useChatColor : false
+>>>>>>> 172

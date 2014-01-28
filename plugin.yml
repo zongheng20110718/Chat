@@ -1,4 +1,5 @@
 name: AkalaboChat
+<<<<<<< HEAD
 main: net.tuyapin.alc.AkalaboChat
 version: 1.7.2.30
 description: Japanese Convert Plugin
@@ -9,6 +10,15 @@ commands:
     description: AkalaboChat functions
     usage: /<command>
 
+=======
+author: tuyapin
+main: net.tuyapin.alc.AkalaboChat
+version: 1.5.2.27
+commands:
+  alc:
+    description: All Start Commands for AkalaboChat.
+    usage: /alc <arg1> [prm1]...
+>>>>>>> 172
 permission: 
   alc.add:
   alc.del:
