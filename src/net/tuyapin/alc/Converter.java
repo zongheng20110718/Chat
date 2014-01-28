@@ -1,6 +1,12 @@
 package net.tuyapin.alc;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.tuyapin.alc.engine.AkalaboInput;
+import net.tuyapin.alc.engine.EnumEngine;
 import net.tuyapin.alc.engine.GoogleJapaneseInput;
 import net.tuyapin.alc.engine.InputEngine;
 import net.tuyapin.alc.engine.SocialIMEInput;
@@ -8,8 +14,11 @@ import net.tuyapin.alc.engine.YahooConversionInput;
 
 public class Converter {
 
+	private static HashMap<String, String>map = new ConvertDefiner();
+
     public static String convert(String text)
     {
+    	String result = "";
 
         if(AkalaboChat.chatcolor)
         {
@@ -62,6 +71,71 @@ public class Converter {
                 break;
         }
 
+        List<String>ignore = AkalaboChat.files.getIgnoreWords();
+
+        String[] word = text.trim().split("[\\s,\\.]+");
+        String a;
+
+        ArrayList<String> convert = new ArrayList<String>();
+        boolean hh = false;
+
+        for(int i = 0; i < word.length; i++)
+        {
+            String w = word[i].replaceAll("w+", "w");
+            if(ignore != null && ignore.contains(w.toLowerCase()))
+            {
+                convert.add(w);
+            } else {
+                StringBuilder sb = new StringBuilder();
+                int len = w.length();
+
+                for(int j = 0; j < len; j++)
+                {
+                    boolean  m = false;
+
+                    for(int k = 4; k > 0; k--)
+                    {
+                        if(len < k + j)
+                        {
+                            continue;
+                        }
+
+                        String s = w.substring(j, j + k).toLowerCase();
+
+                        if(map.containsKey(s))
+                        {
+                            a = map.get(s);
+                            sb.append(a);
+                            if(!a.equals("っ"))
+                            {
+                                j += k - 1;
+                            }
+                            m = hh = true;
+                            break;
+                        }
+                    }
+
+                    if(m || len <= j)
+                    {
+                        continue;
+                    }
+                    sb.append(w.substring(j, j + 1));
+                }
+
+                String cvword = sb.toString();
+                convert.add(cvword);
+            }
+        }
+        if(hh)
+        {
+            result = StringUtils.stringBuild(convert, "");
+        } else {
+			result = text;
+		}
+        if(AkalaboChat.engine != EnumEngine.ALC)
+        {
+        	return engine.getText(result);
+        }
         return engine.getText(text);
     }
 }

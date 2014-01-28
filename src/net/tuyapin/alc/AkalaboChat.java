@@ -57,7 +57,7 @@ public class AkalaboChat extends JavaPlugin
         files.load();
 
 
-        this.reloadConfig();
+        //this.reloadConfig();
         FileConfiguration configuration = plugin.getConfig();
 
         AkalaboChat.enable = configuration.getBoolean("enable");
@@ -65,7 +65,7 @@ public class AkalaboChat extends JavaPlugin
         AkalaboChat.header = configuration.getString("header");
         AkalaboChat.source = configuration.getBoolean("source");
         AkalaboChat.chatcolor = configuration.getBoolean("chatcolor");
-        if(!configuration.getString("apikey").equals(""))
+        if(configuration.getString("apikey") != null)
         {
             AkalaboChat.apikey = configuration.getString("apikey");
         }

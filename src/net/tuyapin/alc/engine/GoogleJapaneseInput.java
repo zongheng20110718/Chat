@@ -18,7 +18,6 @@ public class GoogleJapaneseInput extends InputEngine{
     public String getText(String text) {
 
         text = this.getResponse(text);
-        System.out.println(text);
         StringBuilder builder = new StringBuilder();
 
         try {

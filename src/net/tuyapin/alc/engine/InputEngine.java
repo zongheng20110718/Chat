@@ -44,15 +44,18 @@ public abstract class InputEngine {
             return "";
         }
 
-        if(!this.getEncode().equals("UTF-8")) {
-            try {
-                this.plainText = new String(builder.toString().getBytes("UTF-8"), "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            this.plainText = builder.toString();
-        }
+        this.plainText = builder.toString();
+        System.out.println(this.plainText);
+
+        try {
+        	if(!this.getEncode().equals("EUC-JP"))
+        	{
+        		this.plainText = new String(builder.toString().getBytes(), "EUC-JP");
+        	}
+        	System.out.println(this.plainText);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 
         return this.plainText;
     }

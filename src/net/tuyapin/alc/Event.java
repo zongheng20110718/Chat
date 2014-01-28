@@ -3,6 +3,7 @@ package net.tuyapin.alc;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -50,7 +51,15 @@ public class Event implements Listener {
             e.setCancelled(true);
             text = "<" + e.getPlayer().getName() + "> " + text;
         }
-        AkalaboChat.plugin.getServer().broadcastMessage(text);
+
+        text = ChatColor.GOLD + "[" + AkalaboChat.header + "]" + ChatColor.RESET + text;
+
+        try {
+        	AkalaboChat.plugin.getServer().broadcastMessage(text);
+		} catch (Exception e2) {
+			// TODO: handle exception
+		}
+        //AkalaboChat.plugin.getServer().broadcastMessage(new String(text.getBytes("UTF-8"), "UTF-8"));
     }
 
 }
