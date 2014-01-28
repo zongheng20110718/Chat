@@ -2,41 +2,41 @@ package net.tuyapin.alc.engine;
 
 public enum EnumEngine
 {
-	ALC("AkalaboChat"),
+    ALC("AkalaboChat"),
 
-	GOOGLE("GoogleJapanese"),
+    GOOGLE("GoogleJapanese"),
 
-	YAHOO("YahooConversion"),
+    YAHOO("YahooConversion"),
 
-	SOCIAL("Social");
+    SOCIAL("Social");
 
-	private String name;
+    private String name;
 
-	private EnumEngine(String name)
-	{
-		this.name = name;
-	}
+    private EnumEngine(String name)
+    {
+        this.name = name;
+    }
 
-	public String getName()
-	{
-		return this.name;
-	}
+    public String getName()
+    {
+        return this.name;
+    }
 
-	public String toString()
-	{
-		return this.name;
-	}
+    public String toString()
+    {
+        return this.name;
+    }
 
-	public static EnumEngine getEnum(String name)
-	{
-		EnumEngine[] engines = EnumEngine.values();
-		for(EnumEngine engine : engines)
-		{
-			if(name.equals(engine.name.toString()))
-			{
-				return engine;
-			}
-		}
-		return EnumEngine.ALC;
-	}
+    public static EnumEngine getEnum(String name)
+    {
+        EnumEngine[] engines = EnumEngine.values();
+        for(EnumEngine engine : engines)
+        {
+            if(name.equals(engine.name.toString()))
+            {
+                return engine;
+            }
+        }
+        return EnumEngine.ALC;
+    }
 }

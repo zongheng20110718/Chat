@@ -29,9 +29,9 @@ public class AkalaboChat extends JavaPlugin
 
         try {
 
-        	/*
-        	 * http://tuyapin.net/application does not work.
-        	 */
+            /*
+             * http://tuyapin.net/application does not work.
+             */
 
             //URL url = new URL("http://tuyapin.net/application/akalabochat.txt");
             //HttpURLConnection http = (HttpURLConnection)url.openConnection();
@@ -67,7 +67,7 @@ public class AkalaboChat extends JavaPlugin
         AkalaboChat.chatcolor = configuration.getBoolean("chatcolor");
         if(!configuration.getString("apikey").equals(""))
         {
-        	AkalaboChat.apikey = configuration.getString("apikey");
+            AkalaboChat.apikey = configuration.getString("apikey");
         }
         this.saveConfig();
     }

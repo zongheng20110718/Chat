@@ -42,7 +42,7 @@ public class Event implements Listener {
             }
             text = String.format(Converter.convert(text.replaceAll(URL, "%s")), URL);
         } else {
-        	text = Converter.convert(text);
+            text = Converter.convert(text);
         }
 
         if(!AkalaboChat.source)

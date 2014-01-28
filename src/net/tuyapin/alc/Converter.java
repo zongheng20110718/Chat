@@ -41,26 +41,26 @@ public class Converter {
 
         switch (AkalaboChat.engine)
         {
-			case ALC:
-				engine = new AkalaboInput();
-				break;
+            case ALC:
+                engine = new AkalaboInput();
+                break;
 
-			case GOOGLE:
-				engine = new GoogleJapaneseInput();
-				break;
+            case GOOGLE:
+                engine = new GoogleJapaneseInput();
+                break;
 
-			case YAHOO:
-				engine = new YahooConversionInput();
-				break;
+            case YAHOO:
+                engine = new YahooConversionInput();
+                break;
 
-			case SOCIAL:
-				engine = new SocialIMEInput();
-				break;
+            case SOCIAL:
+                engine = new SocialIMEInput();
+                break;
 
-			default:
-				engine = new  AkalaboInput();
-				break;
-		}
+            default:
+                engine = new  AkalaboInput();
+                break;
+        }
 
         return engine.getText(text);
     }

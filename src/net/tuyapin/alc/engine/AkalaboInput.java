@@ -11,16 +11,16 @@ import net.tuyapin.alc.StringUtils;
 
 public class AkalaboInput extends InputEngine
 {
-	private static HashMap<String, String>map = new ConvertDefiner();
+    private static HashMap<String, String>map = new ConvertDefiner();
 
-	public AkalaboInput()
-	{
-		super("");
-	}
+    public AkalaboInput()
+    {
+        super("");
+    }
 
-	@Override
-	public String getText(String text)
-	{
+    @Override
+    public String getText(String text)
+    {
 
         List<String>ignore = AkalaboChat.files.getIgnoreWords();
         List<String>jpn = AkalaboChat.files.getKanaWords();
@@ -95,11 +95,11 @@ public class AkalaboInput extends InputEngine
             return StringUtils.stringBuild(convert, "");
         }
         return text;
-	}
+    }
 
-	@Override
-	public String getEncode() {
-		return "UTF-8";
-	}
+    @Override
+    public String getEncode() {
+        return "UTF-8";
+    }
 
 }

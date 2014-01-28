@@ -10,54 +10,54 @@ import java.net.URLEncoder;
 @SuppressWarnings("all")
 public abstract class InputEngine {
 
-	private String endpoint;
+    private String endpoint;
 
-	public String plainText;
+    public String plainText;
 
-	public InputEngine(String point)
-	{
-		this.endpoint = point;
-		this.plainText = "";
-	}
+    public InputEngine(String point)
+    {
+        this.endpoint = point;
+        this.plainText = "";
+    }
 
-	public String getResponse(String text)
-	{
-		StringBuilder builder = new StringBuilder();
+    public String getResponse(String text)
+    {
+        StringBuilder builder = new StringBuilder();
 
-		try {
-			URL url = new URL(this.endpoint + URLEncoder.encode(text));
+        try {
+            URL url = new URL(this.endpoint + URLEncoder.encode(text));
 
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			connection.connect();
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.connect();
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), this.getEncode()));
-			String line = "";
-			while((line = br.readLine()) != null)
-			{
-				builder.append(line);
-				builder.append("\n");
-			}
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), this.getEncode()));
+            String line = "";
+            while((line = br.readLine()) != null)
+            {
+                builder.append(line);
+                builder.append("\n");
+            }
 
-			connection.disconnect();
+            connection.disconnect();
 
-		} catch (Exception e) {
-			return "";
-		}
+        } catch (Exception e) {
+            return "";
+        }
 
-		if(!this.getEncode().equals("UTF-8")) {
-			try {
-				this.plainText = new String(builder.toString().getBytes("UTF-8"), "UTF-8");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			this.plainText = builder.toString();
-		}
+        if(!this.getEncode().equals("UTF-8")) {
+            try {
+                this.plainText = new String(builder.toString().getBytes("UTF-8"), "UTF-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            this.plainText = builder.toString();
+        }
 
-		return this.plainText;
-	}
+        return this.plainText;
+    }
 
-	public abstract String getText(String text);
+    public abstract String getText(String text);
 
-	public abstract String getEncode();
+    public abstract String getEncode();
 }
