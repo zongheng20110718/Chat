@@ -26,7 +26,7 @@ public class SocialIMEInput extends InputEngine {
     @Override
     public String getEncode()
     {
-        //死ね
+        //神
         return "EUC-JP";
     }
 

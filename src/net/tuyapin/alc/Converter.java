@@ -3,7 +3,6 @@ package net.tuyapin.alc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.tuyapin.alc.engine.AkalaboInput;
 import net.tuyapin.alc.engine.EnumEngine;
@@ -134,7 +133,12 @@ public class Converter {
 		}
         if(AkalaboChat.engine != EnumEngine.ALC)
         {
-        	return engine.getText(result);
+        	try {
+        		return engine.getText(result);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+        	//return new String(engine.getText(result).getBytes(), "EUC_JP");
         }
         return engine.getText(text);
     }

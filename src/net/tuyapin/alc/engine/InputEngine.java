@@ -6,6 +6,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.Map;
+import java.util.SortedMap;
+
+import net.tuyapin.alc.AkalaboChat;
 
 @SuppressWarnings("all")
 public abstract class InputEngine {
@@ -24,40 +29,41 @@ public abstract class InputEngine {
     {
         StringBuilder builder = new StringBuilder();
 
+        text = "はつねみく";
+
         try {
             URL url = new URL(this.endpoint + URLEncoder.encode(text));
 
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.connect();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), this.getEncode()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-16"));
             String line = "";
             while((line = br.readLine()) != null)
             {
                 builder.append(line);
-                builder.append("\n");
+                //builder.append("\n");
             }
 
             connection.disconnect();
 
+            this.plainText = toEUC_JP(builder.toString());
+            System.out.println(this.plainText);
+
         } catch (Exception e) {
+        	e.printStackTrace();
             return "";
         }
 
-        this.plainText = builder.toString();
-        System.out.println(this.plainText);
-
-        try {
-        	if(!this.getEncode().equals("EUC-JP"))
-        	{
-        		this.plainText = new String(builder.toString().getBytes(), "EUC-JP");
-        	}
-        	System.out.println(this.plainText);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
         return this.plainText;
+    }
+
+    private String toEUC_JP(String t) throws Exception
+    {
+    	byte[] src = t.getBytes(this.getEncode());
+    	byte[] des = (new String(src, this.getEncode())).getBytes("EUC-JP");
+    	t = new String(des, "EUC-JP");
+    	return t;
     }
 
     public abstract String getText(String text);

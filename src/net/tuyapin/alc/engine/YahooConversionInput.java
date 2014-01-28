@@ -75,7 +75,7 @@ public class YahooConversionInput extends InputEngine
     @Override
     public String getEncode()
     {
-        return "UTF-8";
+        return "UTF8";
     }
 
 }
