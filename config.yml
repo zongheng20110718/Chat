@@ -1,0 +1,60 @@
+# =================================================
+# AkalaboChat Configuration
+# =================================================
+# 各項目のデフォルト値を設定の上に記述しています。
+# もし設定をデフォルトに戻したくなった場合は、既存の設定値を削除し、既存の設定を移してください。
+
+
+# Akalabo Chatの日本語変換を行うか行わないかを指定します。
+# trueを指定した場合は変換を行い、falseを指定した場合は変換を行いません。
+#
+# enable: true
+enable: true
+
+
+# Akalabo Chatの日本語変換を行うエンジンを指定します。
+# 指定できるエンジンは以下のとおりです。
+#
+# - AkalaboChat
+#     AkalaboChat/kanji.cfg,AkalaboChat/kana.cfg,AkalaboChat/ignore.cfgを元に
+#     文字列の変換を行います。
+#
+# - GoogleJapanese
+#     Google Japanese Input(Google 日本語入力)を利用して日本語変換を行います。
+#
+# - YahooConversion
+#     Yahoo かな漢字変換APIを利用して日本語変換を行います。
+#
+# - Social
+#     Social IMEを利用して日本語変換を行います。
+# 
+# engine: AkalaboChat
+engine: AkalaboChat
+
+
+# Akalabo Chatで変換された文字を表示する際に追加される文字列を設定します。
+# 指定した文字は自動的にChatColor.GOLD(金色)に設定され、"[", "]"で囲まれます。
+#
+# header: ALC
+header: ALC
+
+
+# Akalabo Chatで変換を行う前の文字列を表示するかしないかを設定します。
+# trueを指定した場合は表示を行い、falseを指定した場合は表示しません。
+# 
+# source: true
+source: true
+
+
+# Akalabo Chat有効時にチャットの色を変更できるかどうかを設定します。
+# trueを指定した場合は変更を行うことができ、falseを指定した場合はできません。
+#
+# chatcolor: true
+chatcolor: true
+
+
+# YahooConversionを利用する際に、独自のAPIキーを利用するかどうかを設定します。
+# 何も設定を行わなかった場合はクライアント内蔵のものを使用します。
+#
+# apikey:
+apikey: 
