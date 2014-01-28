@@ -1,6 +1,8 @@
 package net.tuyapin.alc.engine;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,7 +35,7 @@ public class YahooConversionInput extends InputEngine
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-            Node root = documentBuilder.parse(new ByteArrayInputStream(text.getBytes()));
+            Node root = documentBuilder.parse(this.skipBOM(new ByteArrayInputStream(text.getBytes(this.getEncode()))));
             Node resultset = root.getFirstChild();
             Node result = resultset.getChildNodes().item(1);
             Node segmentlist = result.getChildNodes().item(1);
@@ -75,7 +77,35 @@ public class YahooConversionInput extends InputEngine
     @Override
     public String getEncode()
     {
-        return "UTF8";
+        return "UTF-8";
     }
+
+    // http://k-hiura.cocolog-nifty.com/blog/2013/03/javautf-8bom-dd.html
+    // BOMを握り潰す。
+    private InputStream skipBOM(InputStream stream)
+    {
+    	try {
+        	if(!stream.markSupported())
+        	{
+        		stream = new BufferedInputStream(stream);
+        	}
+        	stream.mark(3);
+        	if(stream.available() >= 3)
+        	{
+        		byte b[] = {0, 0, 0};
+        		stream.read(b, 0, 3);
+        		if( b[0] != (byte)0xEF ||
+        			b[1] != (byte)0xBB ||
+        			b[2] != (byte)0xBF
+        		) {
+        			stream.reset();
+        		}
+        	}
+		} catch (Exception e) {
+			//握りつぶされた例外
+			e.printStackTrace();
+		}
+    	return stream;
+	}
 
 }

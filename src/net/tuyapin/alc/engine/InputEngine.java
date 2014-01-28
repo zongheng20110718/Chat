@@ -29,26 +29,22 @@ public abstract class InputEngine {
     {
         StringBuilder builder = new StringBuilder();
 
-        text = "はつねみく";
-
         try {
-            URL url = new URL(this.endpoint + URLEncoder.encode(text, getEncode()));
+            URL url = new URL(this.endpoint + URLEncoder.encode(text, this.getEncode()));
 
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("GET");
             connection.connect();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), this.getEncode()));
             String line = "";
             while((line = br.readLine()) != null)
             {
                 builder.append(line);
-                //builder.append("\n");
-            }
-
+	        }
             connection.disconnect();
 
             this.plainText = toEUC_JP(builder.toString());
-            System.out.println(this.plainText);
 
         } catch (Exception e) {
         	e.printStackTrace();
@@ -61,7 +57,9 @@ public abstract class InputEngine {
     private String toEUC_JP(String t) throws Exception
     {
     	byte[] src = t.getBytes(this.getEncode());
+    	System.out.println(src.length);
     	byte[] des = (new String(src, this.getEncode())).getBytes("EUC-JP");
+    	System.out.println(des.length);
     	t = new String(des, "EUC-JP");
     	return t;
     }
