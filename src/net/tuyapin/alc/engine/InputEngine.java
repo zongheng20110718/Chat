@@ -32,12 +32,12 @@ public abstract class InputEngine {
         text = "はつねみく";
 
         try {
-            URL url = new URL(this.endpoint + URLEncoder.encode(text));
+            URL url = new URL(this.endpoint + URLEncoder.encode(text, getEncode()));
 
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.connect();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-16"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
             String line = "";
             while((line = br.readLine()) != null)
             {
