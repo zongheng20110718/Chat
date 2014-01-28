@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 name: AkalaboChat
-<<<<<<< HEAD
 main: net.tuyapin.alc.AkalaboChat
 version: 1.7.2.30
 description: Japanese Convert Plugin
@@ -13,50 +9,7 @@ commands:
     description: AkalaboChat functions
     usage: /<command>
 
-=======
-author: tuyapin
-main: net.tuyapin.alc.AkalaboChat
-version: 1.5.2.27
-commands:
-  alc:
-    description: All Start Commands for AkalaboChat.
-    usage: /alc <arg1> [prm1]...
->>>>>>> 172
 permission: 
   alc.add:
   alc.del:
   alc.help:
-=======
-name: AkalaboChat
-main: com.github.tuyapin.AkalaboChat.ALCPlugin
-version: 1.3.2.12
-author: tuyapin
-commands:
-  alc:
-    desctiption: All Start Commands.
-    usage: /<command> <arg1> [param1]...
->>>>>>> 1.3.2 Update
-=======
-name: AkalaboChat
-main: com.github.tuyapin.AkalaboChat.ALCPlugin
-version: 1.3.2.13
-author: tuyapin
-commands:
-  alc:
-    desctiption: All Start Commands.
-    usage: /<command> <arg1> [param1]...
->>>>>>> Bukkit 1.3.2-R0.2 #2364
-=======
-name: AkalaboChat
-author: tuyapin
-main: com.github.tuyapin.AkalaboChat.AkalaboChat
-version: 1.4.5.16
-commands:
-  alc:
-    description: All Start Commands for AkalaboChat.
-    usage: /alc <arg1> [prm1]...
-permission: 
-  alc.add:
-  alc.del:
-  alc.help:
->>>>>>> Bukkit 1.4.2-R0.2

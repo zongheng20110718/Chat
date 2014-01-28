@@ -28,30 +28,18 @@
 package org.mcstats;
 
 import org.bukkit.Bukkit;
-<<<<<<< HEAD
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-=======
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.InvalidConfigurationException;
->>>>>>> 172
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.BufferedReader;
-<<<<<<< HEAD
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-=======
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
->>>>>>> 172
 import java.io.UnsupportedEncodingException;
 import java.net.Proxy;
 import java.net.URL;
@@ -64,27 +52,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
-<<<<<<< HEAD
 import java.util.zip.GZIPOutputStream;
 
-=======
-
-/**
- * <p> The metrics class obtains data about a plugin and submits statistics about it to the metrics backend. </p> <p>
- * Public methods provided by this class: </p>
- * <code>
- * Graph createGraph(String name); <br/>
- * void addCustomData(BukkitMetrics.Plotter plotter); <br/>
- * void start(); <br/>
- * </code>
- */
->>>>>>> 172
 public class Metrics {
 
     /**
      * The current revision number
      */
-<<<<<<< HEAD
     private final static int REVISION = 7;
 
     /**
@@ -102,86 +76,41 @@ public class Metrics {
      */
     private static final int PING_INTERVAL = 15;
 
-=======
-    private final static int REVISION = 6;
-    /**
-     * The base url of the metrics domain
-     */
-    private static final String BASE_URL = "http://mcstats.org";
-    /**
-     * The url used to report a server's status
-     */
-    private static final String REPORT_URL = "/report/%s";
-    /**
-     * The separator to use for custom data. This MUST NOT change unless you are hosting your own version of metrics and
-     * want to change it.
-     */
-    private static final String CUSTOM_DATA_SEPARATOR = "~~";
-    /**
-     * Interval of time to ping (in minutes)
-     */
-    private static final int PING_INTERVAL = 10;
->>>>>>> 172
     /**
      * The plugin this metrics submits for
      */
     private final Plugin plugin;
-<<<<<<< HEAD
 
-=======
->>>>>>> 172
     /**
      * All of the custom graphs to submit to metrics
      */
     private final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<Graph>());
-<<<<<<< HEAD
 
-=======
-    /**
-     * The default graph, used for addCustomData when you don't want a specific graph
-     */
-    private final Graph defaultGraph = new Graph("Default");
->>>>>>> 172
     /**
      * The plugin configuration file
      */
     private final YamlConfiguration configuration;
-<<<<<<< HEAD
 
-=======
->>>>>>> 172
     /**
      * The plugin configuration file
      */
     private final File configurationFile;
-<<<<<<< HEAD
 
-=======
->>>>>>> 172
     /**
      * Unique server id
      */
     private final String guid;
-<<<<<<< HEAD
 
-=======
->>>>>>> 172
     /**
      * Debug mode
      */
     private final boolean debug;
-<<<<<<< HEAD
 
-=======
->>>>>>> 172
     /**
      * Lock for synchronization
      */
     private final Object optOutLock = new Object();
-<<<<<<< HEAD
 
-=======
->>>>>>> 172
     /**
      * The scheduled task
      */
@@ -250,26 +179,6 @@ public class Metrics {
     }
 
     /**
-<<<<<<< HEAD
-=======
-     * Adds a custom data plotter to the default graph
-     *
-     * @param plotter The plotter to use to plot custom data
-     */
-    public void addCustomData(final Plotter plotter) {
-        if (plotter == null) {
-            throw new IllegalArgumentException("Plotter cannot be null");
-        }
-
-        // Add the plotter to the graph o/
-        defaultGraph.addPlotter(plotter);
-
-        // Ensure the default graph is included in the submitted graphs
-        graphs.add(defaultGraph);
-    }
-
-    /**
->>>>>>> 172
      * Start measuring statistics. This will immediately create an async repeating task as the plugin and send the
      * initial data to the metrics backend, and then after that it will post in increments of PING_INTERVAL * 1200
      * ticks.
@@ -428,7 +337,6 @@ public class Metrics {
         // END server software specific section -- all code below does not use any code outside of this class / Java
 
         // Construct the post data
-<<<<<<< HEAD
         StringBuilder json = new StringBuilder(1024);
         json.append('{');
 
@@ -437,16 +345,6 @@ public class Metrics {
         appendJSONPair(json, "plugin_version", pluginVersion);
         appendJSONPair(json, "server_version", serverVersion);
         appendJSONPair(json, "players_online", Integer.toString(playersOnline));
-=======
-        final StringBuilder data = new StringBuilder();
-
-        // The plugin's description file containg all of the plugin data such as name, version, author, etc
-        data.append(encode("guid")).append('=').append(encode(guid));
-        encodeDataPair(data, "version", pluginVersion);
-        encodeDataPair(data, "server", serverVersion);
-        encodeDataPair(data, "players", Integer.toString(playersOnline));
-        encodeDataPair(data, "revision", String.valueOf(REVISION));
->>>>>>> 172
 
         // New data as of R6
         String osname = System.getProperty("os.name");
@@ -460,7 +358,6 @@ public class Metrics {
             osarch = "x86_64";
         }
 
-<<<<<<< HEAD
         appendJSONPair(json, "osname", osname);
         appendJSONPair(json, "osarch", osarch);
         appendJSONPair(json, "osversion", osversion);
@@ -518,46 +415,6 @@ public class Metrics {
 
         // Create the url
         URL url = new URL(BASE_URL + String.format(REPORT_URL, urlEncode(pluginName)));
-=======
-        encodeDataPair(data, "osname", osname);
-        encodeDataPair(data, "osarch", osarch);
-        encodeDataPair(data, "osversion", osversion);
-        encodeDataPair(data, "cores", Integer.toString(coreCount));
-        encodeDataPair(data, "online-mode", Boolean.toString(onlineMode));
-        encodeDataPair(data, "java_version", java_version);
-
-        // If we're pinging, append it
-        if (isPing) {
-            encodeDataPair(data, "ping", "true");
-        }
-
-        // Acquire a lock on the graphs, which lets us make the assumption we also lock everything
-        // inside of the graph (e.g plotters)
-        synchronized (graphs) {
-            final Iterator<Graph> iter = graphs.iterator();
-
-            while (iter.hasNext()) {
-                final Graph graph = iter.next();
-
-                for (Plotter plotter : graph.getPlotters()) {
-                    // The key name to send to the metrics server
-                    // The format is C-GRAPHNAME-PLOTTERNAME where separator - is defined at the top
-                    // Legacy (R4) submitters use the format Custom%s, or CustomPLOTTERNAME
-                    final String key = String.format("C%s%s%s%s", CUSTOM_DATA_SEPARATOR, graph.getName(), CUSTOM_DATA_SEPARATOR, plotter.getColumnName());
-
-                    // The value to send, which for the foreseeable future is just the string
-                    // value of plotter.getValue()
-                    final String value = Integer.toString(plotter.getValue());
-
-                    // Add it to the http post data :)
-                    encodeDataPair(data, key, value);
-                }
-            }
-        }
-
-        // Create the url
-        URL url = new URL(BASE_URL + String.format(REPORT_URL, encode(pluginName)));
->>>>>>> 172
 
         // Connect to the website
         URLConnection connection;
@@ -570,7 +427,6 @@ public class Metrics {
             connection = url.openConnection();
         }
 
-<<<<<<< HEAD
 
         byte[] uncompressed = json.toString().getBytes();
         byte[] compressed = gzip(json.toString());
@@ -613,28 +469,6 @@ public class Metrics {
         } else {
             // Is this the first update this hour?
             if (response.equals("1") || response.contains("This is your first update this hour")) {
-=======
-        connection.setDoOutput(true);
-
-        // Write the data
-        final OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-        writer.write(data.toString());
-        writer.flush();
-
-        // Now read the response
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        final String response = reader.readLine();
-
-        // close resources
-        writer.close();
-        reader.close();
-
-        if (response == null || response.startsWith("ERR")) {
-            throw new IOException(response); //Throw the exception
-        } else {
-            // Is this the first update this hour?
-            if (response.contains("OK This is your first update this hour")) {
->>>>>>> 172
                 synchronized (graphs) {
                     final Iterator<Graph> iter = graphs.iterator();
 
@@ -651,7 +485,6 @@ public class Metrics {
     }
 
     /**
-<<<<<<< HEAD
      * GZip compress a string of bytes
      *
      * @param input
@@ -677,8 +510,6 @@ public class Metrics {
     }
 
     /**
-=======
->>>>>>> 172
      * Check if mineshafter is present. If it is, we need to bypass it to send POST requests
      *
      * @return true if mineshafter is installed on the server
@@ -693,7 +524,6 @@ public class Metrics {
     }
 
     /**
-<<<<<<< HEAD
      * Appends a json encoded key/value pair to the given string builder.
      *
      * @param json
@@ -771,22 +601,6 @@ public class Metrics {
         builder.append('"');
 
         return builder.toString();
-=======
-     * <p>Encode a key/value data pair to be used in a HTTP post request. This INCLUDES a & so the first key/value pair
-     * MUST be included manually, e.g:</p>
-     * <code>
-     * StringBuffer data = new StringBuffer();
-     * data.append(encode("guid")).append('=').append(encode(guid));
-     * encodeDataPair(data, "version", description.getVersion());
-     * </code>
-     *
-     * @param buffer the stringbuilder to append the data pair onto
-     * @param key the key value
-     * @param value the value
-     */
-    private static void encodeDataPair(final StringBuilder buffer, final String key, final String value) throws UnsupportedEncodingException {
-        buffer.append('&').append(encode(key)).append('=').append(encode(value));
->>>>>>> 172
     }
 
     /**
@@ -795,11 +609,7 @@ public class Metrics {
      * @param text the text to encode
      * @return the encoded text, as UTF-8
      */
-<<<<<<< HEAD
     private static String urlEncode(final String text) throws UnsupportedEncodingException {
-=======
-    private static String encode(final String text) throws UnsupportedEncodingException {
->>>>>>> 172
         return URLEncoder.encode(text, "UTF-8");
     }
 
@@ -813,10 +623,7 @@ public class Metrics {
          * rejected
          */
         private final String name;
-<<<<<<< HEAD
 
-=======
->>>>>>> 172
         /**
          * The set of plotters that are contained within this graph
          */
