@@ -17,24 +17,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Commands implements CommandExecutor {
-    
+
     private String helpMessage;
     private String clear;
     private String info;
     private String line;
     private List<String>list = new ArrayList<String>();
-    
+
     private File file;
     private FileOutputStream fos;
     private PrintWriter pw;
     private BufferedReader br;
-    
+
     private ChatColor gold = ChatColor.GOLD;
     private ChatColor white = ChatColor.WHITE;
-    
+
     public Commands()
     {
-       
+
         String[] mes = new String[9];
         mes[0] = ChatColor.AQUA + "---------------ALC HELP---------------";
         mes[1] = gold + "/alc add k p1" + white + ": カタカナに変換する文字列を追加します。 ";
@@ -47,12 +47,12 @@ public class Commands implements CommandExecutor {
         mes[8] = gold + "/alc info" + white + ": ALCの情報を表示します。";
         this.helpMessage = StringUtils.stringBuild(mes);
         this.clear = ChatColor.GREEN + "Success!";
-        
+
         this.info = ChatColor.AQUA + "---------------ALC INFO ---------------\n";
-        this.info += "AkalaboChat " + AkalaboChat.plugin.getVersion();
-        
+        this.info += "AkalaboChat " + AkalaboChat.getPlugin().getVersion();
+
     }
-    
+
     @Override
     public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
         Player player = null;
@@ -60,7 +60,7 @@ public class Commands implements CommandExecutor {
         {
             player = (Player) arg0;
         }
-        
+
         if(arg1.getName().equalsIgnoreCase("alc"))
         {
             if(arg3[0].equalsIgnoreCase("help"))
@@ -71,22 +71,22 @@ public class Commands implements CommandExecutor {
                     return true;
                 }
             }
-            
+
             if(arg3[0].equalsIgnoreCase("info"))
             {
                 arg0.sendMessage(info);
                 return true;
             }
-            
+
             if(arg3[0].equalsIgnoreCase("reload"))
             {
                 if(player == null ||  player.isOp())
                 {
-                    AkalaboChat.plugin.reload();
+                    AkalaboChat.getPlugin().reload();
                     return true;
                 }
             }
-            
+
             if(arg3[0].equalsIgnoreCase("add"))
             {
                 if(player == null || player.hasPermission("alc.add"))
@@ -99,21 +99,21 @@ public class Commands implements CommandExecutor {
                         }
                         try
                         {
-                            file = new File(AkalaboChat.plugin.getDataFolder(), "kana.cfg");
+                            file = new File(AkalaboChat.getPlugin().getDataFolder(), "kana.cfg");
                             fos = new FileOutputStream(file, true);
                             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
                             pw.print(arg3[2]);
                             pw.close();
                             arg0.sendMessage(clear);
-                            AkalaboChat.plugin.reload();
+                            AkalaboChat.getPlugin().reload();
                             return true;
-                            
+
                         } catch (Exception e)
                         {
-                            AkalaboChat.plugin.exception(e);
+                            AkalaboChat.getPlugin().exception(e);
                         }
                     }
-                    
+
                     if(arg3[1].equalsIgnoreCase("c"))
                     {
                         if(arg3.length != 4)
@@ -122,20 +122,20 @@ public class Commands implements CommandExecutor {
                         }
                         try
                         {
-                            file = new File(AkalaboChat.plugin.getDataFolder(), "kanji.cfg");
+                            file = new File(AkalaboChat.getPlugin().getDataFolder(), "kanji.cfg");
                             fos = new FileOutputStream(file, true);
                             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
                             pw.println(arg3[2] + " " + arg3[3]);
                             pw.close();
                             arg0.sendMessage(clear);
-                            AkalaboChat.plugin.reload();
+                            AkalaboChat.getPlugin().reload();
                             return true;
                         }catch(Exception e)
                         {
-                            AkalaboChat.plugin.exception(e);
+                            AkalaboChat.getPlugin().exception(e);
                         }
                     }
-                    
+
                     if(arg3[1].equalsIgnoreCase("e"))
                     {
                         if(arg3.length != 3)
@@ -144,22 +144,22 @@ public class Commands implements CommandExecutor {
                         }
                         try
                         {
-                            file = new File(AkalaboChat.plugin.getDataFolder(), "ignore.cfg");
+                            file = new File(AkalaboChat.getPlugin().getDataFolder(), "ignore.cfg");
                             fos = new FileOutputStream(file, true);
                             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
                             pw.println(arg3[2]);
                             pw.close();
                             arg0.sendMessage(clear);
-                            AkalaboChat.plugin.reload();
+                            AkalaboChat.getPlugin().reload();
                             return true;
                         }catch(Exception e)
                         {
-                            AkalaboChat.plugin.exception(e);
+                            AkalaboChat.getPlugin().exception(e);
                         }
                     }
                 }
             }
-            
+
             if(arg3[0].equalsIgnoreCase("del"))
             {
                 if(player == null || player.hasPermission("alc.del"))
@@ -172,9 +172,9 @@ public class Commands implements CommandExecutor {
                         }
                         try
                         {
-                            file = new File(AkalaboChat.plugin.getDataFolder(), "kana.cfg");
+                            file = new File(AkalaboChat.getPlugin().getDataFolder(), "kana.cfg");
                             br = new BufferedReader(new FileReader(file));
-                            
+
                             while((line = br.readLine()) != null)
                             {
                                 if(!arg3[2].equalsIgnoreCase(line))
@@ -182,7 +182,7 @@ public class Commands implements CommandExecutor {
                                     list.add(line);
                                 }
                             }
-                            
+
                             fos = new FileOutputStream(file, false);
                             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
                             for(int j = 0; j < list.size(); j++)
@@ -190,17 +190,17 @@ public class Commands implements CommandExecutor {
                                 pw.println(list.get(j));
                             }
                             arg0.sendMessage(clear);
-                            AkalaboChat.plugin.reload();
+                            AkalaboChat.getPlugin().reload();
                             br.close();
                             pw.close();
                             list.clear();
                             return true;
                         }catch(Exception e)
                         {
-                            AkalaboChat.plugin.exception(e);
+                            AkalaboChat.getPlugin().exception(e);
                         }
                     }
-                    
+
                     if(arg3[1].equalsIgnoreCase("c"))
                     {
                         if(arg3.length != 4)
@@ -209,9 +209,9 @@ public class Commands implements CommandExecutor {
                         }
                         try
                         {
-                            file = new File(AkalaboChat.plugin.getDataFolder(), "kanji.cfg");
+                            file = new File(AkalaboChat.getPlugin().getDataFolder(), "kanji.cfg");
                             br = new BufferedReader(new FileReader(file));
-                            
+
                             while((line = br.readLine()) != null)
                             {
                                 String[] str = line.split(" ");
@@ -220,26 +220,26 @@ public class Commands implements CommandExecutor {
                                     list.add(line);
                                 }
                             }
-                            
+
                             fos = new FileOutputStream(file, false);
                             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
                             for(int j = 0; j < list.size(); j++)
                             {
                                 pw.println(list.get(j));
                             }
-                            
+
                             arg0.sendMessage(clear);
-                            AkalaboChat.plugin.reload();
+                            AkalaboChat.getPlugin().reload();
                             br.close();
                             pw.close();
                             list.clear();
                             return true;
                         } catch (Exception e)
                         {
-                            AkalaboChat.plugin.exception(e);
+                            AkalaboChat.getPlugin().exception(e);
                         }
                     }
-                    
+
                     if(arg3[1].equalsIgnoreCase("e"))
                     {
                         if(arg3.length != 3)
@@ -248,7 +248,7 @@ public class Commands implements CommandExecutor {
                         }
                         try
                         {
-                            file = new File(AkalaboChat.plugin.getDataFolder(), "ignore.cfg");
+                            file = new File(AkalaboChat.getPlugin().getDataFolder(), "ignore.cfg");
                             br = new BufferedReader(new FileReader(file));
                             while((line = br.readLine()) != null)
                             {
@@ -257,7 +257,7 @@ public class Commands implements CommandExecutor {
                                     list.add(line);
                                 }
                             }
-                            
+
                             fos = new FileOutputStream(file, false);
                             pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fos, "UTF-8")), true);
                             for(int j = 0; j < list.size(); j++)
@@ -265,14 +265,14 @@ public class Commands implements CommandExecutor {
                                 pw.println(list.get(j));
                             }
                             arg0.sendMessage(clear);
-                            AkalaboChat.plugin.reload();
+                            AkalaboChat.getPlugin().reload();
                             br.close();
                             pw.close();
                             list.clear();
                             return true;
                         } catch (Exception e)
                         {
-                            AkalaboChat.plugin.exception(e);
+                            AkalaboChat.getPlugin().exception(e);
                         }
                     }
                 }

@@ -22,9 +22,9 @@ public class AkalaboInput extends InputEngine
     public String getText(String text)
     {
 
-        List<String>ignore = AkalaboChat.files.getIgnoreWords();
-        List<String>jpn = AkalaboChat.files.getKanaWords();
-        Map<String, String>chn = AkalaboChat.files.getKanjiWords();
+        List<String>ignore = AkalaboChat.getPlugin().getIgnores();
+        List<String>jpn = AkalaboChat.getPlugin().getJapanese();
+        Map<String, String>chn = AkalaboChat.getPlugin().getDictionary();
 
         String[] word = text.trim().split("[\\s,\\.]+");
         String a;
@@ -98,7 +98,8 @@ public class AkalaboInput extends InputEngine
     }
 
     @Override
-    public String getEncode() {
+    public String getEncode()
+    {
         return "UTF-8";
     }
 

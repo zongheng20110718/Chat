@@ -1,5 +1,7 @@
 package net.tuyapin.alc;
 
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import net.tuyapin.alc.engine.EnumEngine;
@@ -10,8 +12,7 @@ import org.mcstats.Metrics;
 
 public class AkalaboChat extends JavaPlugin
 {
-    public static AkalaboChat plugin;
-    public static LoadFiles files;
+	private static AkalaboChat plugin;
 
     public static boolean enable = true;
     public static EnumEngine engine = EnumEngine.ALC;
@@ -19,6 +20,14 @@ public class AkalaboChat extends JavaPlugin
     public static boolean source = true;
     public static boolean chatcolor = true;
     public static String apikey = "dj0zaiZpPUNESFBQU0dNQmRhciZzPWNvbnN1bWVyc2VjcmV0Jng9MmM-";
+    /* from 1.7.2.31 */
+    public static boolean ignore = false;
+    public static boolean dynmap = false;
+    public static boolean ignoreuser = true;
+
+    private Map<String, String> dictionary;
+    private List<String> japanese;
+    private List<String> ignores;
 
     Logger logger = Logger.getLogger("Minecraft");
 
@@ -51,11 +60,14 @@ public class AkalaboChat extends JavaPlugin
         } catch (Exception e) {}
 
         this.getCommand("alc").setExecutor(new Commands());
-        this.getServer().getPluginManager().registerEvents(new Event(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
-        files = new LoadFiles(this);
+        LoadFiles files = new LoadFiles(this);
         files.load();
 
+        this.dictionary = files.getKanjiWords();
+        this.japanese = files.getKanaWords();
+        this.ignores = files.getIgnoreWords();
 
         //this.reloadConfig();
         FileConfiguration configuration = plugin.getConfig();
@@ -69,6 +81,9 @@ public class AkalaboChat extends JavaPlugin
         {
             AkalaboChat.apikey = configuration.getString("apikey");
         }
+        AkalaboChat.ignore = configuration.getBoolean("ignore");
+        AkalaboChat.dynmap = configuration.getBoolean("dynmap");
+        AkalaboChat.ignoreuser = configuration.getBoolean("ignoreuser");
         this.saveConfig();
     }
 
@@ -79,8 +94,12 @@ public class AkalaboChat extends JavaPlugin
 
     public void reload()
     {
-        files = new LoadFiles(this);
+        LoadFiles files = new LoadFiles(this);
         files.load();
+
+        this.dictionary = files.getKanjiWords();
+        this.japanese = files.getKanaWords();
+        this.ignores = files.getIgnoreWords();
     }
 
     public void exception(Exception e)
@@ -93,4 +112,21 @@ public class AkalaboChat extends JavaPlugin
     {
         return this.getDescription().getVersion();
     }
+
+	public Map<String, String> getDictionary() {
+		return dictionary;
+	}
+
+	public List<String> getJapanese() {
+		return japanese;
+	}
+
+	public List<String> getIgnores() {
+		return ignores;
+	}
+
+	public static AkalaboChat getPlugin()
+	{
+		return plugin;
+	}
 }

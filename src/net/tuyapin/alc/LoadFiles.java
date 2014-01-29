@@ -102,7 +102,6 @@ public class LoadFiles {
             }
 
             InputStream is = new FileInputStream(file);
-            //Mac OS Support
             BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String line;
             int i = 1;

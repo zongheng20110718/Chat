@@ -32,7 +32,6 @@ public class GoogleJapaneseInput extends InputEngine{
                 builder.append(jsonArray.get(0).getAsString());
             }
 
-            System.out.println(builder.toString().getBytes().length);
             return builder.toString();
         } catch (Exception e) {
             return "";

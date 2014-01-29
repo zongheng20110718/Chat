@@ -1,5 +1,8 @@
 package net.tuyapin.alc;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,13 +11,27 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 @SuppressWarnings("deprecation")
-public class Event implements Listener {
+public class PlayerListener implements Listener {
 
     public static final Pattern URL = Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?", Pattern.CASE_INSENSITIVE);
 
-    @EventHandler(priority=EventPriority.LOWEST)
+    private List<String> ignoreusers;
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerLogin(PlayerLoginEvent e)
+    {
+    	if(this.ignoreusers == null)
+    	{
+    		this.ignoreusers = AkalaboChat.getPlugin().getIgnores();
+    	}
+    	this.ignoreusers.add(e.getPlayer().getDisplayName());
+    }
+
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(PlayerChatEvent e)
     {
         //コマンド無視
@@ -32,11 +49,27 @@ public class Event implements Listener {
 
         String text = e.getMessage();
 
+        //user名が含まれている場合、それらを除外します。
+        // dispname -> alcuser[dispname]
+        Map<String, String> buffer = new HashMap<String, String>();
+
+        if(AkalaboChat.ignoreuser)
+        {
+        	for(String string : this.ignoreusers)
+        	{
+        		if(text.contains(string))
+        		{
+        			buffer.put("alcuser" + string, string);
+        			text = text.replace(string, "alcuser" + string);
+        		}
+        	}
+        }
+
         //http:// and https://を除外
         if(text.contains("http://") || e.getMessage().contains("https://"))
         {
             String URL = "";
-            Matcher matcher = Event.URL.matcher(text);
+            Matcher matcher = PlayerListener.URL.matcher(text);
             if(matcher.find())
             {
                 URL = matcher.group();
@@ -44,6 +77,19 @@ public class Event implements Listener {
             text = String.format(Converter.convert(text.replaceAll(URL, "%s")), URL);
         } else {
             text = Converter.convert(text);
+        }
+
+        //user名を元に戻します。
+        //alcuser[dispname] -> dispname
+        if(AkalaboChat.ignoreuser)
+        {
+        	for(String key : buffer.keySet())
+        	{
+        		if(text.contains(key))
+        		{
+        			text = text.replace(key, buffer.get(key));
+        		}
+        	}
         }
 
         if(!AkalaboChat.source)
@@ -54,12 +100,7 @@ public class Event implements Listener {
 
         text = ChatColor.GOLD + "[" + AkalaboChat.header + "]" + ChatColor.RESET + text;
 
-        try {
-        	AkalaboChat.plugin.getServer().broadcastMessage(text);
-		} catch (Exception e2) {
-			// TODO: handle exception
-		}
-        //AkalaboChat.plugin.getServer().broadcastMessage(new String(text.getBytes("UTF-8"), "UTF-8"));
+        AkalaboChat.getPlugin().getServer().broadcastMessage(text);
     }
 
 }

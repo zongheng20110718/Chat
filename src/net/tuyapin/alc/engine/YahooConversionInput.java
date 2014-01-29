@@ -42,6 +42,7 @@ public class YahooConversionInput extends InputEngine
 
             NodeList segmentlistChildren = segmentlist.getChildNodes();
 
+            //闇を感じる
             for (int i = 0; i < segmentlistChildren.getLength(); i++) {
                 Node a = segmentlistChildren.item(i);
                 if(a.getNodeName().equals("Segment"))

@@ -70,7 +70,7 @@ public class Converter {
                 break;
         }
 
-        List<String>ignore = AkalaboChat.files.getIgnoreWords();
+        List<String>ignore = AkalaboChat.getPlugin().getIgnores();
 
         String[] word = text.trim().split("[\\s,\\.]+");
         String a;
@@ -131,14 +131,10 @@ public class Converter {
         } else {
 			result = text;
 		}
+
         if(AkalaboChat.engine != EnumEngine.ALC)
         {
-        	try {
-        		return engine.getText(result);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-        	//return new String(engine.getText(result).getBytes(), "EUC_JP");
+        	return engine.getText(result);
         }
         return engine.getText(text);
     }

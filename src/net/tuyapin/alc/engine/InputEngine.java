@@ -57,9 +57,7 @@ public abstract class InputEngine {
     private String toEUC_JP(String t) throws Exception
     {
     	byte[] src = t.getBytes(this.getEncode());
-    	System.out.println(src.length);
     	byte[] des = (new String(src, this.getEncode())).getBytes("EUC-JP");
-    	System.out.println(des.length);
     	t = new String(des, "EUC-JP");
     	return t;
     }
