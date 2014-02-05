@@ -16,11 +16,11 @@ import org.bukkit.event.player.PlayerLoginEvent;
 @SuppressWarnings("deprecation")
 public class PlayerListener implements Listener {
 
-    public static final Pattern URL = Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?", Pattern.CASE_INSENSITIVE);
-
     private List<String> ignoreusers;
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    public static final Pattern URL = Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?", Pattern.CASE_INSENSITIVE);
+
+	@EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PlayerLoginEvent e)
     {
     	if(this.ignoreusers == null)
@@ -47,8 +47,15 @@ public class PlayerListener implements Listener {
 
         //送信します。
 
-        String text = e.getMessage();
+        String text = this.convert(e.getMessage());
 
+        text = ChatColor.GOLD + "[" + AkalaboChat.header + "]" + ChatColor.RESET + text;
+
+        AkalaboChat.getPlugin().getServer().broadcastMessage(text);
+    }
+
+    private String convert(String text)
+    {
         //user名が含まれている場合、それらを除外します。
         // dispname -> alcuser[dispname]
         Map<String, String> buffer = new HashMap<String, String>();
@@ -66,7 +73,7 @@ public class PlayerListener implements Listener {
         }
 
         //http:// and https://を除外
-        if(text.contains("http://") || e.getMessage().contains("https://"))
+        if(text.contains("http://") || text.contains("https://"))
         {
             String URL = "";
             Matcher matcher = PlayerListener.URL.matcher(text);
@@ -92,15 +99,6 @@ public class PlayerListener implements Listener {
         	}
         }
 
-        if(!AkalaboChat.source)
-        {
-            e.setCancelled(true);
-            text = "<" + e.getPlayer().getName() + "> " + text;
-        }
-
-        text = ChatColor.GOLD + "[" + AkalaboChat.header + "]" + ChatColor.RESET + text;
-
-        AkalaboChat.getPlugin().getServer().broadcastMessage(text);
-    }
-
+        return text;
+	}
 }

@@ -66,7 +66,7 @@ public class Converter {
                 break;
 
             default:
-                engine = new  AkalaboInput();
+                engine = new AkalaboInput();
                 break;
         }
 

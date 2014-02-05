@@ -25,6 +25,8 @@ public class AkalaboChat extends JavaPlugin
     public static boolean dynmap = false;
     public static boolean ignoreuser = true;
 
+    public boolean dynmapEnabled = false;
+
     private Map<String, String> dictionary;
     private List<String> japanese;
     private List<String> ignores;
@@ -113,15 +115,18 @@ public class AkalaboChat extends JavaPlugin
         return this.getDescription().getVersion();
     }
 
-	public Map<String, String> getDictionary() {
+	public Map<String, String> getDictionary()
+	{
 		return dictionary;
 	}
 
-	public List<String> getJapanese() {
+	public List<String> getJapanese()
+	{
 		return japanese;
 	}
 
-	public List<String> getIgnores() {
+	public List<String> getIgnores()
+	{
 		return ignores;
 	}
 
